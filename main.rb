@@ -154,9 +154,7 @@ class UserActions
   def add_carriage_to_train(train_number)
     check_train_existence(train_number)
     type = @user_data.trains[train_number].type
-
     carriage = type == 'cargo' ? create_cargo_carriage : create_passenger_carriage
-
     @user_data.trains[train_number].add_carriage(carriage)
     puts "#{type.capitalize} carriage was added to train '#{train_number}'"
   end
