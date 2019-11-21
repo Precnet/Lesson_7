@@ -17,7 +17,11 @@ describe 'PassengerCarriage' do
     expect(@carriage2.number).to eq('1234')
   end
   it 'should create carriages with specifies number of seats' do
-    expect(@carriage.instance_variable_get(:@num_of_seats)).to eq(10)
-    expect(@carriage2.instance_variable_get(:@num_of_seats)).to eq(30)
+    expect(@carriage.number_of_seats).to eq(10)
+    expect(@carriage2.number_of_seats).to eq(30)
+  end
+  it 'should increase number of taken seats by one' do
+    @carriage.take_seat
+    expect(@carriage.number_of_seats).to eq(11)
   end
 end
