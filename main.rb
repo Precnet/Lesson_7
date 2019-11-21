@@ -61,7 +61,8 @@ class UserInterface
   end
 
   def get_request_parameters(parameters)
-    if parameters.length > 0
+    if !parameters.empty?
+      p parameters
       parameters.map { |parameter| get_parameter_from_user parameter[1].to_s }
     else
       nil
@@ -86,7 +87,7 @@ class UserActions
   end
 
   def show_existing_stations
-    if @user_data.stations.length > 0
+    if !@user_data.stations.empty?
       puts 'There are next stations:'
       puts @user_data.stations.keys{ |station_name| station_name }.join(', ')
     else
@@ -107,7 +108,7 @@ class UserActions
   end
 
   def show_existing_trains
-    if @user_data.trains.length > 0
+    if !@user_data.trains.empty?
       passenger_trains = @user_data.trains.select { |_, train| train.type == 'passenger'}
       passenger_trains = passenger_trains.map {|name, train| name + '(' + train.carriages.map{|carriage| carriage.number}.join(',') + ')'}
       puts 'There are next passenger trains: ' + passenger_trains.compact.join(',')
@@ -123,7 +124,7 @@ class UserActions
     no_such_station_message = 'There are no station with such name.'
     stations_exist = @user_data.stations.keys.include?(first_station) && @user_data.stations.keys.include?(last_station)
     raise ArgumentError, no_such_station_message unless stations_exist
-    if route_number && route_number.length > 0
+    if route_number && !route_number.empty?
       route = Route.new(first_station, last_station, route_number)
     else
       route = Route.new(first_station, last_station)
