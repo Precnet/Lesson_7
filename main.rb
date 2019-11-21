@@ -160,10 +160,12 @@ class UserActions
 
   def add_carriage_to_train(train_number)
     check_train_existence(train_number)
-    carriage_type = @user_data.trains[train_number].type
-    carriage = carriage_type == 'cargo' ? CargoCarriage.new : PassengerCarriage.new
+    type = @user_data.trains[train_number].type
+
+    carriage = type == 'cargo' ? create_cargo_carriage : create_passenger_carriage
+
     @user_data.trains[train_number].add_carriage(carriage)
-    puts "#{carriage_type.capitalize} carriage was added to train '#{train_number}'"
+    puts "#{type.capitalize} carriage was added to train '#{train_number}'"
   end
 
   def remove_carriage_from_train(train_number, carriage_number)
@@ -226,6 +228,15 @@ class UserActions
     error_message = "Train '#{train_number}' has no carriages with number '#{carriage_number}'"
     has_carriage = @user_data.trains[train_number].carriages.map{|carriage| carriage.number}.include?(carriage_number)
     raise ArgumentError, error_message unless has_carriage
+  end
+
+  def create_cargo_carriage
+    CargoCarriage.new
+  end
+
+  def create_passenger_carriage
+    num_seats = UserInterface.new.send(:get_request_parameters, [%i[req number_of_seats]])
+    PassengerCarriage.new(num_seats)
   end
 end
 
