@@ -4,8 +4,12 @@ require_relative 'passenger_train.rb'
 require_relative 'cargo_train.rb'
 require_relative 'passenger_carriage.rb'
 require_relative 'cargo_carriage.rb'
+require_relative 'requester.rb'
 
 class UserInterface
+
+  include Requester
+
   attr_reader :menu_items, :user_data
   def initialize
     @user_data = UserData.new
@@ -58,20 +62,6 @@ class UserInterface
       puts $!.message
       retry
     end
-  end
-
-  def get_request_parameters(parameters)
-    if !parameters.empty?
-      p parameters
-      parameters.map { |parameter| get_parameter_from_user parameter[1].to_s }
-    else
-      nil
-    end
-  end
-
-  def get_parameter_from_user(parameter)
-    print "Enter #{parameter.split('_').join(' ')}: "
-    gets.strip
   end
 end
 
