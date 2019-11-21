@@ -4,7 +4,7 @@ require_relative 'carriage.rb'
 class CargoCarriage < Carriage
   CARRIAGE_TYPE = 'cargo'
 
-  def initialize(carriage_number = generate_carriage_number(NUMBER_LENGTH))
+  def initialize(carriage_number = generate_number(LENGTH))
     super carriage_number
     @type = CARRIAGE_TYPE
   end
