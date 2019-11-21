@@ -66,6 +66,9 @@ class UserInterface
 end
 
 class UserActions
+
+  include Requester
+
   def initialize(user_data)
     @user_data = user_data
   end
@@ -225,8 +228,8 @@ class UserActions
   end
 
   def create_passenger_carriage
-    num_seats = UserInterface.new.send(:get_request_parameters, [%i[req number_of_seats]])
-    PassengerCarriage.new(num_seats)
+    number_of_seats = get_request_parameters [%i[req number_of_seats]]
+    PassengerCarriage.new(number_of_seats)
   end
 end
 

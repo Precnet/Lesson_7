@@ -92,13 +92,14 @@ describe 'UserInterface' do
   end
   context 'carriage management' do
     it 'should add carriage to train' do
-      message_passenger = "Passenger carriage was added to train 'test1'\n"
+      message_passenger = "Enter number of seats: Passenger carriage was added to train 'test1'\n"
       expect(@ui.user_data.trains['test1'].number_of_carriages).to eq(0)
-      expect { @ui.select_menu_item(:add_carriage_to_train, 'test1')}.to output(message_passenger).to_stdout
+      allow_any_instance_of(Kernel).to receive(:gets).and_return('10')
+      expect { @ui.select_menu_item(:add_carriage_to_train, 'test1') }.to output(message_passenger).to_stdout
       expect(@ui.user_data.trains['test1'].number_of_carriages).to eq(1)
-      expect { @ui.select_menu_item(:add_carriage_to_train, 'test1')}.to output(message_passenger).to_stdout
+      expect { @ui.select_menu_item(:add_carriage_to_train, 'test1') }.to output(message_passenger).to_stdout
       message_cargo = "Cargo carriage was added to train '123-45'\n"
-      expect { @ui.select_menu_item(:add_carriage_to_train, '123-45')}.to output(message_cargo).to_stdout
+      expect { @ui.select_menu_item(:add_carriage_to_train, '123-45') }.to output(message_cargo).to_stdout
     end
     it 'should remove carriage from train' do
       expect { @ui.select_menu_item(:remove_carriage_from_train, ['test', 'smth']) }.to raise_error(ArgumentError)
