@@ -13,7 +13,7 @@ describe 'CargoCarriage' do
     expect(@carriage.manufacturer).to eq('Train inc.')
   end
   it 'should create carriages with fixed number' do
-    carriage2 = PassengerCarriage.new('1234')
+    carriage2 = PassengerCarriage.new('1234', 10)
     expect(carriage2.number).to eq('1234')
   end
 end
