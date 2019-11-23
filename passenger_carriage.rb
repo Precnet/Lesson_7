@@ -27,6 +27,10 @@ class PassengerCarriage < Carriage
     @number_of_seats[:total] - @number_of_seats[:taken]
   end
 
+  def taken_seats
+    @number_of_seats[:taken]
+  end
+
   private
   def free_seats?
     free_seats > 0
