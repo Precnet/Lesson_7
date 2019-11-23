@@ -101,6 +101,8 @@ describe 'Station' do
       # increase speed of cargo trains and puts it
       speeds = "10\n10\n"
       expect { @station.process_trains { |train| puts train.increase_speed_by(10) if train.type == 'cargo' }}.to output(speeds).to_stdout
+
+      expect { @station.process_trains }.to raise_error(RailwayError)
     end
   end
   context 'checking validness of object' do
