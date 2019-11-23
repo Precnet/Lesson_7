@@ -98,7 +98,7 @@ describe 'UserInterface' do
       expect { @ui.select_menu_item(:add_carriage_to_train, 'test1') }.to output(message_passenger).to_stdout
       expect(@ui.user_data.trains['test1'].number_of_carriages).to eq(1)
       expect { @ui.select_menu_item(:add_carriage_to_train, 'test1') }.to output(message_passenger).to_stdout
-      message_cargo = "Cargo carriage was added to train '123-45'\n"
+      message_cargo = "Enter max cargo volumne: Cargo carriage was added to train '123-45'\n"
       expect { @ui.select_menu_item(:add_carriage_to_train, '123-45') }.to output(message_cargo).to_stdout
     end
     it 'should remove carriage from train' do
