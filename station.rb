@@ -48,6 +48,13 @@ class Station
     result
   end
 
+  def process_trains
+    no_block_error = 'This method requires block to operate!'
+    raise RailwayError, no_block_error unless block_given?
+
+    trains_at_station.each { |train| yield train }
+  end
+
   private
 
   def validate!
