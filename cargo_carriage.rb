@@ -15,6 +15,20 @@ class CargoCarriage < Carriage
 
   def place_cargo(volume)
     no_space_error = "Not enough space to place your cargo!"
-    raise RailwayError, no_space_error unless
+    raise RailwayError, no_space_error unless free_volume - volume >= 0
+
+    @volume[:taken] += volume
+  end
+
+  def cargo_capacity
+    @volume[:max]
+  end
+
+  def free_volume
+    @volume[:max] - @volume[:taken]
+  end
+
+  def occupied_volume
+    @volume[:taken]
   end
 end
