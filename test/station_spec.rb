@@ -90,6 +90,18 @@ describe 'Station' do
       Station.new('1234')
       expect(Station.number_of_instances).to eq(12)
     end
+    it 'should apply custom block to trains on station' do
+      @station.train_arrived(@train_1)
+      @station.train_arrived(@train_2)
+      @station.train_arrived(@train_3)
+
+      # puts trains`s types
+      types = "cargo\npassenger\ncargo\n"
+      expect { @station.process_trains { |train| puts train.type } }.to output(types).to_stdout
+      # increase speed of cargo trains and puts it
+      speeds = "10\n10\n"
+      expect { @station.process_trains { |train| puts train.increase_speed_by(10) if train.type == 'cargo' }}.to output(speeds).to_stdout
+    end
   end
   context 'checking validness of object' do
     before(:each) do
