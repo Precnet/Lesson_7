@@ -22,6 +22,16 @@ describe 'PassengerCarriage' do
   end
   it 'should increase number of taken seats by one' do
     @carriage.take_seat
+    expect(@carriage.taken_seats).to eq(1)
     expect(@carriage.free_seats).to eq(9)
+    @carriage2.take_seat
+    @carriage2.take_seat
+    expect(@carriage2.taken_seats).to eq(2)
+    expect(@carriage2.free_seats).to eq(28)
+  end
+  it 'shouldn`t take seats if there are no free seats' do
+    carriage3 = PassengerCarriage.new(1)
+    carriage3.take_seat
+    expect { carriage3.take_seat }.to raise_error(RailwayError)
   end
 end
