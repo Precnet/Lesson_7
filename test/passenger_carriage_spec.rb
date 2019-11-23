@@ -22,6 +22,6 @@ describe 'PassengerCarriage' do
   end
   it 'should increase number of taken seats by one' do
     @carriage.take_seat
-    expect(@carriage.number_of_seats).to eq(11)
+    expect(@carriage.free_seats).to eq(9)
   end
 end
