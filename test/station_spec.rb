@@ -97,12 +97,12 @@ describe 'Station' do
 
       # puts trains`s types
       types = "cargo\npassenger\ncargo\n"
-      expect { @station.process_trains { |train| puts train.type } }.to output(types).to_stdout
+      expect { @station.each_train { |train| puts train.type } }.to output(types).to_stdout
       # increase speed of cargo trains and puts it
       speeds = "10\n10\n"
-      expect { @station.process_trains { |train| puts train.increase_speed_by(10) if train.type == 'cargo' }}.to output(speeds).to_stdout
+      expect { @station.each_train { |train| puts train.increase_speed_by(10) if train.type == 'cargo' }}.to output(speeds).to_stdout
 
-      expect { @station.process_trains }.to raise_error(RailwayError)
+      expect { @station.each_train }.to raise_error(RailwayError)
     end
   end
   context 'checking validness of object' do

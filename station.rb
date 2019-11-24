@@ -48,7 +48,7 @@ class Station
     result
   end
 
-  def process_trains
+  def each_train
     no_block_error = 'This method requires block to operate!'
     raise RailwayError, no_block_error unless block_given?
 
