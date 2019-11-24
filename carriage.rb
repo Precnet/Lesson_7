@@ -11,10 +11,16 @@ class Carriage
   CARRIAGE_TYPE = ''.freeze
 
   attr_reader :number, :type
+  @@carriages = []
+
+  def self.all
+    @@carriages
+  end
 
   def initialize(carriage_number)
     @number = carriage_number
     validate!
+    @@carriages.push(self)
   end
 
   protected
