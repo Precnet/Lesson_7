@@ -199,7 +199,7 @@ class UserActions
     puts "There are next trains at station '#{station_name}':"
     # puts "Passenger trains: #{@user_data.stations[station_name].trains_at_station_of_type('passenger')}"
     # puts "Cargo trains: #{@user_data.stations[station_name].trains_at_station_of_type('cargo')}"
-    show_train = Proc.new { |train| puts "Number: #{train.number}, Type: #{train.type}, Carriages: #{train.number_of_carriages}}" }
+    show_train = Proc.new { |train| puts "Number: #{train.number}, Type: #{train.type}, Carriages: #{train.number_of_carriages}" }
     station = @user_data.stations[station_name]
     station.each_train { |train| show_train.call train }
   end
