@@ -28,5 +28,14 @@ describe 'PassengerTrain' do
       @train.increase_speed_by(10)
       expect { @train.add_carriage('passenger') }.to raise_error(RuntimeError)
     end
+    it 'should apply custom block to each carriage' do
+      # puts carriage`s types
+      types = "passenger\npassenger\n"
+      expect { @train.each_carriage { |carriage| puts carriage.type } }.to output(types).to_stdout
+      # place 2 cargo in each carriage
+      free_cargo = "19\n21\n"
+      @train.each_carriage { |carriage| carriage.take_seat }
+      expect { @train.each_carriage { |carriage| puts carriage.free_seats }}.to output(free_cargo).to_stdout
+    end
   end
 end
