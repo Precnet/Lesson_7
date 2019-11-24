@@ -10,8 +10,8 @@ describe 'UserInterface' do
       @ui.create_default_menu
       menu = [:add_carriage_to_train, :add_route_to_train, :add_station_to_route, :create_cargo_train,
               :create_passenger_train, :create_route, :create_station, :move_train_backward, :move_train_forward,
-              :remove_carriage_from_train, :remove_station_from_route, :show_existing_stations, :show_existing_trains,
-              :show_trains_at_station]
+              :remove_carriage_from_train, :remove_station_from_route, :show_carriages_of_train,
+              :show_existing_stations, :show_existing_trains, :show_trains_at_station]
       expect(@ui.menu_items).to eq(menu)
     end
   end
@@ -122,10 +122,10 @@ describe 'UserInterface' do
   end
   context 'displaying trains at station' do
     it 'should correctly display trains at station' do
-      message_1 = "There are next trains at station 'middle_1':\nPassenger trains: [\"test1\"]\nCargo trains: []\n"
+      message_1 = "There are next trains at station 'middle_1':\nNumber: test1, Type: passenger, Carriages: 1\n"
       expect { @ui.select_menu_item(:show_trains_at_station, 'middle_1') }.to output(message_1).to_stdout
       @ui.select_menu_item(:move_train_forward, 'test1')
-      message_2 = "There are next trains at station 'middle_1':\nPassenger trains: []\nCargo trains: []\n"
+      message_2 = "There are next trains at station 'middle_1':\n"
       expect { @ui.select_menu_item(:show_trains_at_station, 'middle_1') }.to output(message_2).to_stdout
       @ui.select_menu_item(:move_train_backward, 'test1')
       expect { @ui.select_menu_item(:show_trains_at_station, 'middle_1') }.to output(message_1).to_stdout
