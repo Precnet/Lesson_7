@@ -212,7 +212,7 @@ class UserActions
   end
 
   def take_seat_in_carriage(carriage_number)
-
+    check_carriage_existence(carriage_number)
   end
 
   def place_cargo_in_carriage(carriage_number)
@@ -222,21 +222,21 @@ class UserActions
   private
 
   def check_route_existence(route_name)
-    raise ArgumentError, "No such route #{route_name}" unless @user_data.routes.keys.include? route_name
+    raise RailwayError, "No such route #{route_name}" unless @user_data.routes.keys.include? route_name
   end
 
   def check_station_existence(station_name)
-    raise ArgumentError, "No such station #{station_name}" unless @user_data.stations.keys.include? station_name
+    raise RailwayError, "No such station #{station_name}" unless @user_data.stations.keys.include? station_name
   end
 
   def check_train_existence(train_name)
-    raise ArgumentError, "No such train #{train_name}" unless @user_data.trains.keys.include? train_name
+    raise RailwayError, "No such train #{train_name}" unless @user_data.trains.keys.include? train_name
   end
 
   def check_train_has_such_carriage(train_number, carriage_number)
     error_message = "Train '#{train_number}' has no carriages with number '#{carriage_number}'"
     has_carriage = @user_data.trains[train_number].carriages.map{|carriage| carriage.number}.include?(carriage_number)
-    raise ArgumentError, error_message unless has_carriage
+    raise RailwayError, error_message unless has_carriage
   end
 
   def create_cargo_carriage
@@ -247,6 +247,10 @@ class UserActions
   def create_passenger_carriage
     number_of_seats = get_request_parameters [%i[req number_of_seats]]
     PassengerCarriage.new(*number_of_seats)
+  end
+
+  def check_carriage_existence(carriage_number)
+
   end
 end
 

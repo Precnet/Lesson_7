@@ -72,8 +72,8 @@ describe 'UserInterface' do
       @ui.select_menu_item(:add_station_to_route, [route_name, 'middle_1'])
       @ui.select_menu_item(:add_station_to_route, [route_name, 'middle_2'])
       expect(@ui.user_data.routes[route_name].stations.length).to eq(5)
-      expect { @ui.select_menu_item(:remove_station_from_route, [route_name, 'new_2']) }.to raise_error(ArgumentError)
-      expect { @ui.select_menu_item(:remove_station_from_route, ['route_name', 'new_1']) }.to raise_error(ArgumentError)
+      expect { @ui.select_menu_item(:remove_station_from_route, [route_name, 'new_2']) }.to raise_error(RailwayError)
+      expect { @ui.select_menu_item(:remove_station_from_route, ['route_name', 'new_1']) }.to raise_error(RailwayError)
       message = "Station 'new_1' were removed from route '#{route_name}'\n"
       expect { @ui.select_menu_item(:remove_station_from_route, [route_name, 'new_1']) }.to output(message).to_stdout
       expect(@ui.user_data.routes[route_name].stations.length).to eq(4)
@@ -86,7 +86,7 @@ describe 'UserInterface' do
       @ui.select_menu_item(:create_passenger_train, 'train')
       route_name = @ui.user_data.routes.keys.first
       train_name = @ui.user_data.trains.keys.first
-      expect { @ui.select_menu_item(:add_route_to_train, [route_name, 'some_train']) }.to raise_error(ArgumentError)
+      expect { @ui.select_menu_item(:add_route_to_train, [route_name, 'some_train']) }.to raise_error(RailwayError)
       message = "Train '#{train_name}' is following route '#{route_name}' now\n"
       expect { @ui.select_menu_item(:add_route_to_train, [route_name, train_name]) }.to output(message).to_stdout
     end
@@ -103,7 +103,7 @@ describe 'UserInterface' do
       expect { @ui.select_menu_item(:add_carriage_to_train, '123-45') }.to output(message_cargo).to_stdout
     end
     it 'should remove carriage from train' do
-      expect { @ui.select_menu_item(:remove_carriage_from_train, ['test', 'smth']) }.to raise_error(ArgumentError)
+      expect { @ui.select_menu_item(:remove_carriage_from_train, ['test', 'smth']) }.to raise_error(RailwayError)
       carriage_number = @ui.user_data.trains['test1'].carriages[0].number
       message = "Carriage '#{carriage_number}' was removed from train 'test1'\n"
       expect(@ui.user_data.trains['test1'].number_of_carriages).to eq(2)
