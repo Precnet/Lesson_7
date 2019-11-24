@@ -223,12 +223,12 @@ class UserActions
 
   def create_cargo_carriage
     max_cargo_volume = get_request_parameters [%i[req max_cargo_volumne]]
-    CargoCarriage.new(max_cargo_volume)
+    CargoCarriage.new(*max_cargo_volume)
   end
 
   def create_passenger_carriage
     number_of_seats = get_request_parameters [%i[req number_of_seats]]
-    PassengerCarriage.new(number_of_seats)
+    PassengerCarriage.new(*number_of_seats)
   end
 
   def show_train_carriages(train_number)
