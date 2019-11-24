@@ -211,6 +211,14 @@ class UserActions
     train.each_carriage { |carriage| carriage.type == 'cargo' ? show_cargo.call(carriage) : show_passenger.call(carriage) }
   end
 
+  def take_seat_in_carriage(carriage_number)
+
+  end
+
+  def place_cargo_in_carriage(carriage_number)
+
+  end
+
   private
 
   def check_route_existence(route_name)
