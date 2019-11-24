@@ -3,6 +3,7 @@ require_relative 'train_iterator.rb'
 
 class PassengerTrain < Train
   attr_reader :carriages
+  include TrainIterator
 
   def initialize(train_number)
     super(train_type='passenger', number_of_carriages=0, train_number=train_number)
