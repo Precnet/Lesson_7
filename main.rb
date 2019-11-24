@@ -230,6 +230,10 @@ class UserActions
     number_of_seats = get_request_parameters [%i[req number_of_seats]]
     PassengerCarriage.new(number_of_seats)
   end
+
+  def show_train_carriages(train_number)
+
+  end
 end
 
 class UserData
