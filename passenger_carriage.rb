@@ -9,7 +9,7 @@ class PassengerCarriage < Carriage
     super number
     @type = CARRIAGE_TYPE
     @number_of_seats = Hash.new
-    @number_of_seats[:total] = num_of_seats
+    @number_of_seats[:total] = num_of_seats.to_i
     @number_of_seats[:taken] = 0
   end
 

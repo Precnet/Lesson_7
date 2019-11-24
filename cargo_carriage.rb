@@ -9,7 +9,7 @@ class CargoCarriage < Carriage
     super carriage_number
     @type = CARRIAGE_TYPE
     @volume = Hash.new
-    @volume[:max] = max_cargo_volume
+    @volume[:max] = max_cargo_volume.to_i
     @volume[:taken] = 0
   end
 
