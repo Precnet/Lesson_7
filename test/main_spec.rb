@@ -10,8 +10,9 @@ describe 'UserInterface' do
       @ui.create_default_menu
       menu = [:add_carriage_to_train, :add_route_to_train, :add_station_to_route, :create_cargo_train,
               :create_passenger_train, :create_route, :create_station, :move_train_backward, :move_train_forward,
-              :remove_carriage_from_train, :remove_station_from_route, :show_carriages_of_train,
-              :show_existing_stations, :show_existing_trains, :show_trains_at_station]
+              :place_cargo_in_carriage, :remove_carriage_from_train, :remove_station_from_route,
+              :show_carriages_of_train, :show_existing_stations, :show_existing_trains, :show_trains_at_station,
+              :take_seat_in_carriage]
       expect(@ui.menu_items).to eq(menu)
     end
   end
