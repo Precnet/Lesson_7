@@ -13,7 +13,7 @@ class Carriage
   attr_reader :number, :type
   @@carriages = []
 
-  def self.all
+  def self.carriages
     @@carriages
   end
 
