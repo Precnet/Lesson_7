@@ -5,8 +5,8 @@ require_relative 'railway_error.rb'
 class CargoCarriage < Carriage
   CARRIAGE_TYPE = 'cargo'
 
-  def initialize(carriage_number = generate_number(LENGTH), max_cargo_volume)
-    super carriage_number
+  def initialize(number = generate_number(LENGTH), max_cargo_volume)
+    super number
     @type = CARRIAGE_TYPE
     @volume = Hash.new
     @volume[:max] = max_cargo_volume.to_i
