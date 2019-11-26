@@ -110,6 +110,16 @@ describe 'UserInterface' do
       expect { @ui.select_menu_item(:remove_carriage_from_train, ['test1', carriage_number]) }.to output(message).to_stdout
       expect(@ui.user_data.trains['test1'].number_of_carriages).to eq(1)
     end
+    it 'should add cargo to cargo trains' do
+      carriage_number = Carriage.carriages.select { |carriage| carriage.is_a? CargoCarriage }[0].number
+      message = "Cargo (1) placed in carriage #{carriage_number}\n"
+      expect { @ui.select_menu_item(:place_cargo_in_carriage, [carriage_number, 1]) }.to output(message).to_stdout
+    end
+    it 'should take seats in passenger trains' do
+      carriage_number = Carriage.carriages.select { |carriage| carriage.is_a? PassengerCarriage }[0].number
+      message = "One more place taken in carriage PassengerCarriage\n"
+      expect { @ui.select_menu_item(:take_seat_in_carriage, carriage_number) }.to output(message).to_stdout
+    end
   end
   context 'train movement' do
     it 'should move train forward and backward' do
