@@ -213,10 +213,18 @@ class UserActions
 
   def take_seat_in_carriage(carriage_number)
     check_carriage_existence(carriage_number)
+    check_carriage_is_passenger(carriage_number)
+    carriage = Carriage.carriages.select { |carriage| carriage.number == carriage_number }
+    carriage.take_seat
+    puts "One more place taken in carriage #{carriage_number}"
   end
 
-  def place_cargo_in_carriage(carriage_number)
-
+  def place_cargo_in_carriage(carriage_number, cargo_volume)
+    check_carriage_existence(carriage_number)
+    check_carriage_is_cargo(carriage_number)
+    carriage = Carriage.carriages.select { |carriage| carriage.number == carriage_number }[0]
+    carriage.place_cargo cargo_volume.to_i
+    puts "Cargo (#{cargo_volume}) placed in carriage #{carriage_number}"
   end
 
   private
@@ -250,7 +258,21 @@ class UserActions
   end
 
   def check_carriage_existence(carriage_number)
+    error_message = "There is no carriage with number '#{carriage_number}'!"
+    carriage_exists = Carriage.carriages.map { |carriage| carriage.number }.include? carriage_number
+    raise RailwayError, error_message unless carriage_exists
+  end
 
+  def check_carriage_is_passenger(carriage_number)
+    carriage = Carriage.carriages.select { |carriage| carriage.number == carriage_number }[0]
+    error_message = 'Can`t add seats to cargo carriage!'
+    raise RailwayError, error_message unless carriage.is_a? PassengerCarriage
+  end
+
+  def check_carriage_is_cargo(carriage_number)
+    carriage = Carriage.carriages.select { |carriage| carriage.number == carriage_number }[0]
+    error_message = 'Can`t add goods to passenger carriage!'
+    raise RailwayError, error_message unless carriage.is_a? CargoCarriage
   end
 end
 
