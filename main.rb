@@ -270,9 +270,8 @@ class UserActions
   end
 
   def check_route_existence(route_name)
-    unless @user_data.routes.keys.include? route_name
-      raise RailwayError, "No such route #{route_name}"
-    end
+    error = "No such route #{route_name}"
+    raise RailwayError, error unless @user_data.routes.keys.include? route_name
   end
 
   def check_station_existence(station_name)
