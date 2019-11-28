@@ -26,7 +26,7 @@ describe 'PassengerTrain' do
       expect { @train.add_carriage('passenger') }.to raise_error(ArgumentError)
       expect { @train.add_carriage(wrong_carriage) }.to raise_error(ArgumentError)
       @train.increase_speed_by(10)
-      expect { @train.add_carriage('passenger') }.to raise_error(RuntimeError)
+      expect { @train.add_carriage('passenger') }.to raise_error(RailwayError)
     end
     it 'should apply custom block to each carriage' do
       # puts carriage`s types

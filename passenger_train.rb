@@ -11,7 +11,9 @@ class PassengerTrain < Train
   end
 
   def add_carriage(carriage)
-    raise RuntimeError, 'Can`t add new carriages while train is moving.' unless @current_speed == 0
+    error = 'Can`t add new carriages while train is moving.'
+    raise RailwayError, error unless @current_speed.zero?
+
     error_message = "Wrong carriage for this type of train. Expected '#{self.class}', got #{carriage.class}."
     raise ArgumentError, error_message unless carriage_correct?(carriage)
     carriages.push(carriage)
