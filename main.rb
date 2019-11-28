@@ -309,7 +309,7 @@ class UserActions
   end
 
   def check_carriage_is_passenger(number)
-    carriage = Carriage.carriages.select { |carriage| carriage.number == number }[0]
+    carriage = Carriage.carriages.select { |car| car.number == number }[0]
     error_message = 'Can`t add seats to cargo carriage!'
     raise RailwayError, error_message unless carriage.is_a? PassengerCarriage
   end
