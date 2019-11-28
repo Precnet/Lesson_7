@@ -193,18 +193,18 @@ class UserActions
   end
 
   def show_carriages_of_train(train_number)
-    show_cargo = proc { |carriage| puts cargo_carriage_description(carriage) }
-    show_passenger = proc { |carriage| puts "Number: #{carriage.number}, Type: #{carriage.type}, Free seats: #{carriage.free_seats}, Taken seats: #{carriage.taken_seats}" }
+    show_cargo = proc { |car| puts cargo_carriage_description(car) }
+    show_passenger = proc { |car| puts passenger_carriage_description(car) }
     train = @user_data.trains[train_number]
-    train.each_carriage { |carriage| carriage.type == 'cargo' ? show_cargo.call(carriage) : show_passenger.call(carriage) }
+    train.each_carriage { |car| show_carriage(car, show_cargo, show_passenger) }
   end
 
-  def take_seat_in_carriage(carriage_number)
-    check_carriage_existence(carriage_number)
-    check_carriage_is_passenger(carriage_number)
-    carriage = Carriage.carriages.select { |carriage| carriage.number == carriage_number }[0]
+  def take_seat_in_carriage(number)
+    check_carriage_existence(number)
+    check_carriage_is_passenger(number)
+    carriage = Carriage.carriages.select { |car| car.number == number }[0]
     carriage.take_seat
-    puts "One more place taken in carriage #{carriage_number}"
+    puts "One more place taken in carriage #{number}"
   end
 
   def place_cargo_in_carriage(carriage_number, cargo_volume)
@@ -216,6 +216,18 @@ class UserActions
   end
 
   private
+
+  def show_carriage(car, proc1, proc2)
+    car.type == 'cargo' ? proc1.call(car) : proc2.call(car)
+  end
+
+  def passenger_carriage_description(carriage)
+    number = "Number: #{carriage.number}"
+    type = "Type: #{carriage.type}"
+    free = "Free seats: #{carriage.free_seats}"
+    taken = "Taken seats: #{carriage.taken_seats}"
+    [number, type, free, taken].join(', ')
+  end
 
   def cargo_carriage_description(carriage)
     number = "Number: #{carriage.number}"
