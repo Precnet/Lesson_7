@@ -113,7 +113,7 @@ describe 'UserInterface' do
     it 'should add cargo to cargo trains' do
       carriage_number = Carriage.carriages.select { |carriage| carriage.is_a? CargoCarriage }[0].number
       message = "Cargo (1) placed in carriage #{carriage_number}\n"
-      expect { @ui.select_menu_item(:place_cargo_in_carriage, [carriage_number, 1]) }.to output(message).to_stdout
+      expect { @ui.select_menu_item(:place_cargo_in_carriage, [1, carriage_number]) }.to output(message).to_stdout
     end
     it 'should take seats in passenger trains' do
       carriage_number = Carriage.carriages.select { |carriage| carriage.is_a? PassengerCarriage }[0].number
