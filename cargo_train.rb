@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'train.rb'
 require_relative 'train_iterator.rb'
 
@@ -6,14 +8,16 @@ class CargoTrain < Train
   include TrainIterator
 
   def initialize(train_number)
-    super(train_type='cargo', number_of_carriages=0, train_number=train_number)
+    super('cargo', 0, train_number)
     @carriages = []
   end
 
   def add_carriage(carriage)
-    raise RuntimeError, 'Can`t add new carriages while train is moving.' unless @current_speed == 0
-    error_message = "Wrong carriage for this type of train. Expected '#{self.class}', got #{carriage.class}."
-    raise ArgumentError, error_message unless carriage_correct?(carriage)
+    error = 'Can`t add new carriages while train is moving.'
+    raise RailwayError, error unless @current_speed.zero?
+
+    error_message = 'Wrong carriage for this type of train!'
+    raise RailwayError, error_message unless carriage_correct?(carriage)
 
     carriages.push(carriage)
     super()
@@ -21,7 +25,9 @@ class CargoTrain < Train
 
   def remove_carriage(carriage_number)
     error_message = 'There are no such carriages.'
-    raise ArgumentError, error_message unless @carriages.map { |carriage| carriage.number }.include?(carriage_number)
+    unless @carriages.map(&:number).include?(carriage_number)
+      raise ArgumentError, error_message
+    end
 
     @carriages.reject! { |carriage| carriage.number == carriage_number }
     super()
