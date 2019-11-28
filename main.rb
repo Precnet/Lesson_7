@@ -110,12 +110,8 @@ class UserActions
 
   def show_existing_trains
     if !@user_data.trains.empty?
-      passenger_trains = @user_data.trains.select { |_, train| train.type == 'passenger' }
-      passenger_trains = passenger_trains.map { |name, train| name + '(' + train.carriages.map(&:number).join(',') + ')' }
-      puts 'There are next passenger trains: ' + passenger_trains.compact.join(',')
-      cargo_trains = @user_data.trains.select { |_, train| train.type == 'cargo' }
-      cargo_trains = cargo_trains.map { |name, train| name + '(' + train.carriages.map(&:number).join(',') + ')' }
-      puts 'There are next cargo trains: ' + cargo_trains.compact.join(',')
+      display_trains('passenger')
+      display_trains('cargo')
     else
       puts 'There are no trains.'
     end
@@ -238,6 +234,16 @@ class UserActions
 
   private
 
+  def display_trains(type)
+    p_trains = @user_data.trains.select { |_, train| train.type == type }
+    p_trains = p_trains.map(&method(:train_to_str))
+    puts "There are next #{type} trains: " + p_trains.compact.join(',')
+  end
+
+  def train_to_str(name, train)
+    name + '(' + train.carriages.map(&:number).join(',') + ')'
+  end
+
   def check_route_existence(route_name)
     unless @user_data.routes.keys.include? route_name
       raise RailwayError, "No such route #{route_name}"
@@ -278,14 +284,14 @@ class UserActions
     raise RailwayError, error_message unless carriage_exists
   end
 
-  def check_carriage_is_passenger(carriage_number)
-    carriage = Carriage.carriages.select { |carriage| carriage.number == carriage_number }[0]
+  def check_carriage_is_passenger(number)
+    carriage = Carriage.carriages.select { |carriage| carriage.number == number }[0]
     error_message = 'Can`t add seats to cargo carriage!'
     raise RailwayError, error_message unless carriage.is_a? PassengerCarriage
   end
 
-  def check_carriage_is_cargo(carriage_number)
-    carriage = Carriage.carriages.select { |carriage| carriage.number == carriage_number }[0]
+  def check_carriage_is_cargo(number)
+    carriage = Carriage.carriages.select { |carriage| carriage.number == number }[0]
     error_message = 'Can`t add goods to passenger carriage!'
     raise RailwayError, error_message unless carriage.is_a? CargoCarriage
   end
