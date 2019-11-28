@@ -37,8 +37,9 @@ class Route
   private
 
   def validate!
-    # to avoid duplication with storing actual station objects route saves only station`s names,
-    # while actual stations are stored in instances of UserData class (main.rb)
+    # to avoid duplication with storing actual station objects route saves
+    # only station`s names, while actual stations are stored in instances 
+    # of UserData class (main.rb)
     validate_route_name_type!
     validate_route_name_length!
   end
@@ -49,7 +50,7 @@ class Route
   end
 
   def validate_route_name_length!
-    length_message = "Route number should be between 3 and 20 symbols! Got - #{@number.length}"
+    length_message = 'Route number should be between 3 and 20 symbols!'
     raise RailwayError, length_message unless 3 < @number.length && @number.length < 20
   end
 
