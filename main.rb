@@ -281,14 +281,14 @@ class UserActions
   end
 
   def check_train_existence(train_name)
-    unless @user_data.trains.keys.include? train_name
-      raise RailwayError, "No such train #{train_name}"
-    end
+    error = "No such train #{train_name}"
+    raise RailwayError, error unless @user_data.trains.keys.include? train_name
   end
 
-  def check_train_has_such_carriage(train_number, carriage_number)
-    error_message = "Train '#{train_number}' has no carriages with number '#{carriage_number}'"
-    has_carriage = @user_data.trains[train_number].carriages.map(&:number).include?(carriage_number)
+  def check_train_has_such_carriage(train, carriage)
+    error_message = "Train '#{train}' has no carriage with number '#{carriage}'"
+    carriages = @user_data.trains[train].carriages
+    has_carriage = carriages.map(&:number).include?(carriage)
     raise RailwayError, error_message unless has_carriage
   end
 
