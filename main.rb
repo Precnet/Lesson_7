@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'station.rb'
 require_relative 'route.rb'
 require_relative 'passenger_train.rb'
@@ -7,7 +9,6 @@ require_relative 'cargo_carriage.rb'
 require_relative 'requester.rb'
 
 class UserInterface
-
   include Requester
 
   attr_reader :menu_items, :user_data
@@ -21,9 +22,9 @@ class UserInterface
   end
 
   def main_loop
-    while true
+    loop do
       show_menu
-      process_user_input get_user_input
+      process_user_input get_user_input.to_i
     end
   end
 
@@ -33,13 +34,16 @@ class UserInterface
 
   def show_menu
     puts '--- Main menu ---'
-    @menu_items.each_with_index {|item, index| puts((index + 1).to_s + ' - ' + item.to_s.capitalize.gsub('_', ' ')) }
+    @menu_items.each_with_index { |item, index| puts(menu_item(item, index)) }
     puts '______ End ______'
     puts
   end
 
-  def select_menu_item(item, args=nil)
-    raise ArgumentError, "No such menu item: #{item}!" unless @menu_items.include?(item)
+  def select_menu_item(item, args = nil)
+    unless @menu_items.include?(item)
+      raise ArgumentError, "No such menu item: #{item}!"
+    end
+
     args ? @user_action.send(item, *args) : @user_action.send(item)
   end
 
@@ -51,22 +55,26 @@ class UserInterface
     gets.strip
   end
 
-  def process_user_input(user_input)
-    user_input = user_input.to_i
-    error_message = 'There is no such menu item!'
-    raise ArgumentError, error_message unless (1..@menu_items.length).include? user_input
+  def process_user_input(input)
+    error = 'There is no such menu item!'
+    raise ArgumentError, error unless (1..@menu_items.length).include?(input)
+
     begin
-      parameters = get_request_parameters @user_action.method(@menu_items[user_input - 1]).parameters
-      select_menu_item(@menu_items[user_input - 1], parameters)
-    rescue
-      puts $!.message
+      method = @menu_items[input - 1]
+      parameters = get_request_parameters @user_action.method(method).parameters
+      select_menu_item(@menu_items[input - 1], parameters)
+    rescue StandardError
+      puts $ERROR_INFO.message
       retry
     end
+  end
+
+  def menu_item(item, index)
+    (index + 1).to_s + ' - ' + item.to_s.capitalize.gsub('_', ' ')
   end
 end
 
 class UserActions
-
   include Requester
 
   def initialize(user_data)
@@ -82,19 +90,19 @@ class UserActions
   def show_existing_stations
     if !@user_data.stations.empty?
       puts 'There are next stations:'
-      puts @user_data.stations.keys{ |station_name| station_name }.join(', ')
+      puts @user_data.stations.keys { |station_name| station_name }.join(', ')
     else
       puts 'There are no stations.'
     end
   end
 
-  def create_cargo_train(train_number=nil)
+  def create_cargo_train(train_number = nil)
     train = CargoTrain.new(train_number)
     @user_data.trains[train.number] = train
     puts "New cargo train created. Its number is: #{train.number}"
   end
 
-  def create_passenger_train(train_number=nil)
+  def create_passenger_train(train_number = nil)
     train = PassengerTrain.new(train_number)
     @user_data.trains[train.number] = train
     puts "New passenger train created. Its number is: #{train.number}"
@@ -102,26 +110,27 @@ class UserActions
 
   def show_existing_trains
     if !@user_data.trains.empty?
-      passenger_trains = @user_data.trains.select { |_, train| train.type == 'passenger'}
-      passenger_trains = passenger_trains.map {|name, train| name + '(' + train.carriages.map{|carriage| carriage.number}.join(',') + ')'}
+      passenger_trains = @user_data.trains.select { |_, train| train.type == 'passenger' }
+      passenger_trains = passenger_trains.map { |name, train| name + '(' + train.carriages.map(&:number).join(',') + ')' }
       puts 'There are next passenger trains: ' + passenger_trains.compact.join(',')
-      cargo_trains = @user_data.trains.select { |_, train| train.type == 'cargo'}
-      cargo_trains = cargo_trains.map {|name, train| name + '(' + train.carriages.map{|carriage| carriage.number}.join(',') + ')'}
+      cargo_trains = @user_data.trains.select { |_, train| train.type == 'cargo' }
+      cargo_trains = cargo_trains.map { |name, train| name + '(' + train.carriages.map(&:number).join(',') + ')' }
       puts 'There are next cargo trains: ' + cargo_trains.compact.join(',')
     else
       puts 'There are no trains.'
     end
   end
 
-  def create_route(first_station, last_station, route_number=nil)
+  def create_route(first_station, last_station, route_number = nil)
     no_such_station_message = 'There are no station with such name.'
     stations_exist = @user_data.stations.keys.include?(first_station) && @user_data.stations.keys.include?(last_station)
     raise ArgumentError, no_such_station_message unless stations_exist
-    if route_number && !route_number.empty?
-      route = Route.new(first_station, last_station, route_number)
-    else
-      route = Route.new(first_station, last_station)
-    end
+
+    route = if route_number && !route_number.empty?
+              Route.new(first_station, last_station, route_number)
+            else
+              Route.new(first_station, last_station)
+            end
     @user_data.routes[route.number] = route
     puts "Route '#{route.number}' created"
   end
@@ -177,7 +186,7 @@ class UserActions
     new_station = @user_data.trains[train_number].current_station
     @user_data.stations[new_station].train_arrived(@user_data.trains[train_number])
     message = 'Train had arrived at next station! Current station is '
-    puts message + "#{@user_data.trains[train_number].current_station}"
+    puts message + @user_data.trains[train_number].current_station.to_s
   end
 
   def move_train_backward(train_number)
@@ -191,7 +200,7 @@ class UserActions
     new_station = @user_data.trains[train_number].current_station
     @user_data.stations[new_station].train_arrived(@user_data.trains[train_number])
     message = 'Train had arrived at previous station! Current station is '
-    puts message + "#{@user_data.trains[train_number].current_station}"
+    puts message + @user_data.trains[train_number].current_station.to_s
   end
 
   def show_trains_at_station(station_name)
@@ -199,14 +208,14 @@ class UserActions
     puts "There are next trains at station '#{station_name}':"
     # puts "Passenger trains: #{@user_data.stations[station_name].trains_at_station_of_type('passenger')}"
     # puts "Cargo trains: #{@user_data.stations[station_name].trains_at_station_of_type('cargo')}"
-    show_train = Proc.new { |train| puts "Number: #{train.number}, Type: #{train.type}, Carriages: #{train.number_of_carriages}" }
+    show_train = proc { |train| puts "Number: #{train.number}, Type: #{train.type}, Carriages: #{train.number_of_carriages}" }
     station = @user_data.stations[station_name]
     station.each_train { |train| show_train.call train }
   end
 
   def show_carriages_of_train(train_number)
-    show_cargo = Proc.new { |carriage| puts "Number: #{carriage.number}, Type: #{carriage.type}, Empty cargo: #{carriage.free_volume}, Occupied cargo: #{carriage.occupied_volume}" }
-    show_passenger = Proc.new { |carriage| puts "Number: #{carriage.number}, Type: #{carriage.type}, Free seats: #{carriage.free_seats}, Taken seats: #{carriage.taken_seats}" }
+    show_cargo = proc { |carriage| puts "Number: #{carriage.number}, Type: #{carriage.type}, Empty cargo: #{carriage.free_volume}, Occupied cargo: #{carriage.occupied_volume}" }
+    show_passenger = proc { |carriage| puts "Number: #{carriage.number}, Type: #{carriage.type}, Free seats: #{carriage.free_seats}, Taken seats: #{carriage.taken_seats}" }
     train = @user_data.trains[train_number]
     train.each_carriage { |carriage| carriage.type == 'cargo' ? show_cargo.call(carriage) : show_passenger.call(carriage) }
   end
@@ -230,20 +239,26 @@ class UserActions
   private
 
   def check_route_existence(route_name)
-    raise RailwayError, "No such route #{route_name}" unless @user_data.routes.keys.include? route_name
+    unless @user_data.routes.keys.include? route_name
+      raise RailwayError, "No such route #{route_name}"
+    end
   end
 
   def check_station_existence(station_name)
-    raise RailwayError, "No such station #{station_name}" unless @user_data.stations.keys.include? station_name
+    unless @user_data.stations.keys.include? station_name
+      raise RailwayError, "No such station #{station_name}"
+    end
   end
 
   def check_train_existence(train_name)
-    raise RailwayError, "No such train #{train_name}" unless @user_data.trains.keys.include? train_name
+    unless @user_data.trains.keys.include? train_name
+      raise RailwayError, "No such train #{train_name}"
+    end
   end
 
   def check_train_has_such_carriage(train_number, carriage_number)
     error_message = "Train '#{train_number}' has no carriages with number '#{carriage_number}'"
-    has_carriage = @user_data.trains[train_number].carriages.map{|carriage| carriage.number}.include?(carriage_number)
+    has_carriage = @user_data.trains[train_number].carriages.map(&:number).include?(carriage_number)
     raise RailwayError, error_message unless has_carriage
   end
 
@@ -259,7 +274,7 @@ class UserActions
 
   def check_carriage_existence(carriage_number)
     error_message = "There is no carriage with number '#{carriage_number}'!"
-    carriage_exists = Carriage.carriages.map { |carriage| carriage.number }.include? carriage_number
+    carriage_exists = Carriage.carriages.map(&:number).include? carriage_number
     raise RailwayError, error_message unless carriage_exists
   end
 
@@ -285,8 +300,7 @@ class UserData
   end
 end
 
-
-if __FILE__==$0
+if $PROGRAM_NAME == __FILE__
   user_interface = UserInterface.new
   user_interface.create_default_menu
   user_interface.main_loop
