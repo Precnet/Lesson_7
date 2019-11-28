@@ -105,7 +105,7 @@ describe 'UserInterface' do
     it 'should remove carriage from train' do
       expect { @ui.select_menu_item(:remove_carriage_from_train, ['test', 'smth']) }.to raise_error(RailwayError)
       carriage_number = @ui.user_data.trains['test1'].carriages[0].number
-      message = "Carriage '#{carriage_number}' was removed from train 'test1'\n"
+      message = "'#{carriage_number}' was removed from train 'test1'\n"
       expect(@ui.user_data.trains['test1'].number_of_carriages).to eq(2)
       expect { @ui.select_menu_item(:remove_carriage_from_train, ['test1', carriage_number]) }.to output(message).to_stdout
       expect(@ui.user_data.trains['test1'].number_of_carriages).to eq(1)
