@@ -193,8 +193,8 @@ class UserActions
   end
 
   def show_carriages_of_train(train_number)
-    show_cargo = proc { |car| puts cargo_carriage_description(car) }
-    show_passenger = proc { |car| puts passenger_carriage_description(car) }
+    show_cargo = proc { |item| puts cargo_carriage_description(item) }
+    show_passenger = proc { |item| puts passenger_carriage_description(item) }
     train = @user_data.trains[train_number]
     train.each_carriage { |car| show_carriage(car, show_cargo, show_passenger) }
   end
@@ -309,13 +309,13 @@ class UserActions
   end
 
   def check_carriage_is_passenger(number)
-    carriage = Carriage.carriages.select { |car| car.number == number }[0]
+    carriage = Carriage.carriages.select { |item| item.number == number }[0]
     error_message = 'Can`t add seats to cargo carriage!'
     raise RailwayError, error_message unless carriage.is_a? PassengerCarriage
   end
 
   def check_carriage_is_cargo(number)
-    carriage = Carriage.carriages.select { |carriage| carriage.number == number }[0]
+    carriage = Carriage.carriages.select { |item| item.number == number }[0]
     error_message = 'Can`t add goods to passenger carriage!'
     raise RailwayError, error_message unless carriage.is_a? CargoCarriage
   end
