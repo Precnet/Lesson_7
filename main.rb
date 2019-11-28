@@ -146,12 +146,8 @@ class UserActions
   def add_route_to_train(route_name, train_number)
     check_route_existence(route_name)
     check_train_existence(train_number)
-    # register route and set current station as first station
-    @user_data.trains[train_number].define_route(@user_data.routes[route_name])
-    # register train at station
-    station_name = @user_data.trains[train_number].current_station
-    @user_data.stations[station_name].train_arrived(@user_data.trains[train_number])
-    puts "Train '#{train_number}' is following route '#{route_name}' now"
+    register_route_at_train(route_name, train_number)
+    register_train_at_station(route_name, train_number)
   end
 
   def add_carriage_to_train(train_number)
@@ -231,6 +227,16 @@ class UserActions
   end
 
   private
+
+  def register_route_at_train(route_name, train_number)
+    @user_data.trains[train_number].define_route(@user_data.routes[route_name])
+  end
+
+  def register_train_at_station(route_name, train_number)
+    station_name = @user_data.trains[train_number].current_station
+    @user_data.stations[station_name].train_arrived(@user_data.trains[train_number])
+    puts "Train '#{train_number}' is following route '#{route_name}' now"
+  end
 
   def display_trains(type)
     p_trains = @user_data.trains.select { |_, train| train.type == type }
