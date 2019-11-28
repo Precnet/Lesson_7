@@ -6,7 +6,7 @@ class PassengerTrain < Train
   include TrainIterator
 
   def initialize(train_number)
-    super(train_type='passenger', number_of_carriages=0, train_number=train_number)
+    super('passenger', 0, train_number)
     @carriages = []
   end
 
