@@ -193,7 +193,7 @@ class UserActions
   end
 
   def show_carriages_of_train(train_number)
-    show_cargo = proc { |carriage| puts "Number: #{carriage.number}, Type: #{carriage.type}, Empty cargo: #{carriage.free_volume}, Occupied cargo: #{carriage.occupied_volume}" }
+    show_cargo = proc { |carriage| puts cargo_carriage_description(carriage) }
     show_passenger = proc { |carriage| puts "Number: #{carriage.number}, Type: #{carriage.type}, Free seats: #{carriage.free_seats}, Taken seats: #{carriage.taken_seats}" }
     train = @user_data.trains[train_number]
     train.each_carriage { |carriage| carriage.type == 'cargo' ? show_cargo.call(carriage) : show_passenger.call(carriage) }
@@ -216,6 +216,14 @@ class UserActions
   end
 
   private
+
+  def cargo_carriage_description(carriage)
+    number = "Number: #{carriage.number}"
+    type = "Type: #{carriage.type}"
+    empty = "Empty cargo: #{carriage.free_volume}"
+    occupied = "Occupied cargo: #{carriage.occupied_volume}"
+    [number, type, empty, occupied].join(', ')
+  end
 
   def train_description(train)
     number = "Number: #{train.number}"
