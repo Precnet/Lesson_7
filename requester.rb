@@ -1,12 +1,10 @@
+# frozen_string_literal: true
 module Requester
   private
 
   def get_request_parameters(parameters)
-    if !parameters.empty?
-      parameters.map { |parameter| get_parameter_from_user parameter[1].to_s }
-    else
-      nil
-    end
+    result = parameters.map { |param| get_parameter_from_user param[1].to_s }
+    result unless parameters.empty?
   end
 
   def get_parameter_from_user(parameter)
