@@ -275,9 +275,9 @@ class UserActions
   end
 
   def check_station_existence(station_name)
-    unless @user_data.stations.keys.include? station_name
-      raise RailwayError, "No such station #{station_name}"
-    end
+    error = "No such station #{station_name}"
+    stations = @user_data.stations.keys
+    raise RailwayError, error unless stations.include? station_name
   end
 
   def check_train_existence(train_name)
