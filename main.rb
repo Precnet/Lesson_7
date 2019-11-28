@@ -207,12 +207,12 @@ class UserActions
     puts "One more place taken in carriage #{number}"
   end
 
-  def place_cargo_in_carriage(carriage_number, cargo_volume)
-    check_carriage_existence(carriage_number)
-    check_carriage_is_cargo(carriage_number)
-    carriage = Carriage.carriages.select { |carriage| carriage.number == carriage_number }[0]
+  def place_cargo_in_carriage(cargo_volume, number)
+    check_carriage_existence(number)
+    check_carriage_is_cargo(number)
+    carriage = Carriage.carriages.select { |car| car.number == number }[0]
     carriage.place_cargo cargo_volume.to_i
-    puts "Cargo (#{cargo_volume}) placed in carriage #{carriage_number}"
+    puts "Cargo (#{cargo_volume}) placed in carriage #{number}"
   end
 
   private
