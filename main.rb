@@ -255,8 +255,8 @@ class UserActions
   end
 
   def register_train_at_station(train_number)
-    station_name = @user_data.trains[train_number].current_station
-    @user_data.stations[station_name].train_arrived(@user_data.trains[train_number])
+    station = @user_data.trains[train_number].current_station
+    @user_data.stations[station].train_arrived(@user_data.trains[train_number])
   end
 
   def display_trains(type)
