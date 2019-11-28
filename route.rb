@@ -51,7 +51,8 @@ class Route
 
   def validate_route_name_length!
     length_message = 'Route number should be between 3 and 20 symbols!'
-    raise RailwayError, length_message unless 3 < @number.length && @number.length < 20
+    length_is_correct = @number.length > 3 && @number.length < 20
+    raise RailwayError, length_message unless length_is_correct
   end
 
   def generate_route_number(number_length)
