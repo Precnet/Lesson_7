@@ -4,7 +4,7 @@ require_relative '../passenger_carriage.rb'
 describe 'PassengerCarriage' do
   before(:all) do
     @carriage = PassengerCarriage.new(10)
-    @carriage2 = PassengerCarriage.new('1234', 30)
+    @carriage2 = PassengerCarriage.new(30, '1234')
   end
   it 'should create passenger carriage' do
     expect(@carriage.type).to eq('passenger')
