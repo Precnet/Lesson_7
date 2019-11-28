@@ -23,7 +23,9 @@ class PassengerTrain < Train
 
   def remove_carriage(carriage_number)
     error_message = 'There are no such carriages.'
-    raise ArgumentError, error_message unless @carriages.map { |carriage| carriage.number}.include?(carriage_number)
+    carriage_exists = @carriages.map(&:number).include?(carriage_number)
+    raise RailwayError, error_message unless carriage_exists
+
     @carriages.reject! { |carriage| carriage.number == carriage_number }
     super()
   end
