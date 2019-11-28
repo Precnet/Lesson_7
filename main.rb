@@ -177,13 +177,9 @@ class UserActions
 
   def move_train_backward(train_number)
     check_train_existence(train_number)
-    # current station: unregister train
     unregister_train_at_station(train_number)
-    # train: move to previous station
     @user_data.trains[train_number].move_backward
-    # new station: register train
-    new_station = @user_data.trains[train_number].current_station
-    @user_data.stations[new_station].train_arrived(@user_data.trains[train_number])
+    register_train_at_station(train_number)
     message = 'Train had arrived at previous station! Current station is '
     puts message + @user_data.trains[train_number].current_station.to_s
   end
