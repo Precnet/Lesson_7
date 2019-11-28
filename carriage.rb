@@ -36,8 +36,9 @@ class Carriage
   end
 
   def validate_carriage_name_length!
-    length_message = "Carriage number should be between 3 and 20 symbols! Got - #{@number.length}"
-    raise RailwayError, length_message unless 3 <= @number.length && @number.length < 20
+    length_message = 'Carriage number should be between 3 and 20 symbols!'
+    length_is_correct = @number.length >= 3 && @number.length < 20
+    raise RailwayError, length_message unless length_is_correct
   end
 
   # this is a method for creating default name for carriage it should not
