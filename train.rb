@@ -129,7 +129,8 @@ class Train
 
   def validate_train_number_format!
     error_number = "Train number is in wrong format - #{@number}"
-    raise RailwayError, error_number unless @number =~ /^[0-9a-z]{3}-?[0-9a-z]{2}$/i
+    correct_number = @number =~ /^[0-9a-z]{3}-?[0-9a-z]{2}$/i
+    raise RailwayError, error_number unless correct_number
   end
 
   # should be private because there is no need to call it in descendants
