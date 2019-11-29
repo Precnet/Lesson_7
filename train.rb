@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'manufacturer.rb'
 require_relative 'instance_counter.rb'
 require_relative 'validator.rb'
@@ -113,8 +115,10 @@ class Train
   end
 
   def validate_number_of_carriages!
-    error_carriages = "Number of carriages should be positive Integer. Got: #{@number_of_carriages}"
-    raise RailwayError, error_carriages unless @number_of_carriages.is_a?(Integer) && @number_of_carriages >= 0
+    error_carriages = 'Number of carriages should be positive Integer.'
+    correct_type = @number_of_carriages.is_a?(Integer)
+    correct_number = @number_of_carriages >= 0
+    raise RailwayError, error_carriages unless correct_type && correct_number
   end
 
   def validate_train_number!
