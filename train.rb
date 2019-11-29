@@ -115,10 +115,11 @@ class Train
   end
 
   def validate_number_of_carriages!
-    error_carriages = 'Number of carriages should be positive Integer.'
-    correct_type = @number_of_carriages.is_a?(Integer)
-    correct_number = @number_of_carriages >= 0
-    raise RailwayError, error_carriages unless correct_type && correct_number
+    error_type = 'Number of carriages should be Integer.'
+    raise RailwayError, error_type unless @number_of_carriages.is_a?(Integer)
+
+    error_amount = 'Number of carriages should be positive.'
+    raise RailwayError,error_amount unless @number_of_carriages >= 0
   end
 
   def validate_train_number!
