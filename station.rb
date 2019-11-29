@@ -38,7 +38,8 @@ class Station
   end
 
   def trains_at_station_of_type(type)
-    @trains_at_station.select { |train| train if train.type == type }.map(&:number)
+    trains = @trains_at_station.select { |train| train if train.type == type }
+    trains.map(&:number)
   end
 
   def trains_at_station_by_type
@@ -60,7 +61,7 @@ class Station
   def validate!
     validate_station_name_not_nil!
     validate_station_name_type!
-    validate_station_name_non_empty!
+    validate_station_name_empty!
     validate_station_name_length!
   end
 
@@ -74,7 +75,7 @@ class Station
     raise RailwayError, type_message unless @name.is_a?(String)
   end
 
-  def validate_station_name_non_empty!
+  def validate_station_name_empty!
     empty_message = 'Station name can`t be empty!'
     raise RailwayError, empty_message unless @name.length.positive?
   end
