@@ -4,7 +4,7 @@ module Validator
   def valid?
     validate!
     true
-    rescue RailwayError
-      false
+  rescue RailwayError
+    false
   end
 end
